@@ -1,10 +1,9 @@
 # Super Foda Chat
 
-Literally the best chat in the world!
+Literally the best chat in the world! (This is sarcasm)
 
 ## Requirements
 
-- [Node.js](https://nodejs.org)
 - [Bun](https://bun.sh)
 - A database on [Turso](https://turso.tech)
 
@@ -13,6 +12,5 @@ Literally the best chat in the world!
 - Clone this repo;
 - Install the dependencies with `bun install`;
 - Add your database credentials to the `.env` file, following the `.env.example` file;
-- Build the project with `bun build`;
-- Start the web server with `node build/index.js`;
-- Start the web socket server with `bun run src/lib/server/ws.ts `.
+- Build and start the web server with `bun prod`;
+- Start the web socket server with `bun ws-server`.
