@@ -2,7 +2,7 @@
 	import { ModeWatcher, toggleMode, mode } from 'mode-watcher';
 	import { Button } from '$lib/components/ui/button';
 
-	import { Sun, Moon } from 'lucide-svelte';
+	import { Sun, Moon, LogOut } from 'lucide-svelte';
 
 	import '../app.css';
 
@@ -19,7 +19,7 @@
 	>
 		Chat SUper FOda
 	</Button>
-	<div class="flex items-center gap-8 justify-self-end">
+	<div class="flex items-center gap-4 justify-self-end">
 		<Button
 			onclick={toggleMode}
 			size="icon"
@@ -34,7 +34,12 @@
 		</Button>
 
 		{#if data.user}
-			<p>{data.user.username}</p>
+			<Button
+				href="/signout"
+				size="icon"
+			>
+				<LogOut />
+			</Button>
 		{:else}
 			<Button href="/signin">Sign In</Button>
 		{/if}
