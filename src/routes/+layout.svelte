@@ -24,6 +24,7 @@
 			onclick={toggleMode}
 			size="icon"
 			variant="outline"
+			class="hover:bg-foreground hover:text-background"
 		>
 			{#if $mode === 'light'}
 				<Moon />
