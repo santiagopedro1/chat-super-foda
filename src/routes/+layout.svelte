@@ -10,7 +10,7 @@
 </script>
 
 <ModeWatcher />
-<header class="container mx-auto grid grid-cols-3 items-center py-4">
+<header class="container grid grid-cols-3 items-center py-4">
 	<div>Logo aqui</div>
 	<Button
 		class="justify-self-center text-xl font-bold"
@@ -45,6 +45,6 @@
 		{/if}
 	</div>
 </header>
-<main class="container mx-auto py-8">
+<div class="py-4">
 	<slot></slot>
-</main>
+</div>

@@ -13,3 +13,12 @@ export const sessionTable = sqliteTable('session', {
 		.references(() => userTable.id),
 	expiresAt: integer('expires_at').notNull()
 });
+
+export const messageTable = sqliteTable('message', {
+	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+	userId: text('user_id')
+		.notNull()
+		.references(() => userTable.id),
+	content: text('content').notNull(),
+	timestamp: integer('timestamp', { mode: 'timestamp' }).notNull()
+});
