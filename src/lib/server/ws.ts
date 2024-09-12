@@ -2,6 +2,7 @@ import { drizzle } from 'drizzle-orm/libsql';
 import { createClient } from '@libsql/client';
 
 import * as schema from '$lib/db/tables';
+import type { ServerWebSocket } from 'bun';
 
 const client = createClient({
 	url: process.env.DATABASE_URL!,
@@ -11,14 +12,19 @@ const client = createClient({
 const db = drizzle(client, { schema });
 
 const server = Bun.serve({
-	port: process.env.PUBLIC_WS_PORT!,
+	hostname: process.env.PUBLIC_WS_HOST || 'localhost',
+	port: process.env.PUBLIC_WS_PORT || 3000,
 
 	websocket: {
+		open(ws) {
+			console.log('New connection from ', ws.remoteAddress);
+			connections.push(ws);
+		  },
 		async message(ws, message: string) {
 			const content = JSON.parse(message);
 			switch (content.type) {
 				case 'config':
-					console.log('Give me the messages bitch');
+					console.log('all messages to ', ws.remoteAddress);
 					const messages = await db
 						.select({ userId: schema.messageTable.userId, content: schema.messageTable.content })
 						.from(schema.messageTable)
@@ -38,7 +44,7 @@ const server = Bun.serve({
 					break;
 
 				case 'new message':
-					console.log('new message');
+					console.log('new message from ', ws.remoteAddress);
 
 					const { userId, content } = JSON.parse(message).data;
 
@@ -54,6 +60,12 @@ const server = Bun.serve({
 							content: 'Message sent!'
 						})
 					);
+
+					connections.forEach((connection) => {
+						if (connection !== ws && connection.readyState === WebSocket.OPEN) {
+						  connection.send(JSON.stringify({ type: 'new message', data: { userId, content } }));
+						}
+					  });
 
 					break;
 			}
@@ -72,3 +84,5 @@ const server = Bun.serve({
 });
 
 console.log(`Listening on ${server.hostname}:${server.port}`);
+
+const connections: Array<ServerWebSocket<unknown>> = [];

@@ -4,7 +4,7 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { Separator } from '$lib/components/ui/separator';
 
-	import { PUBLIC_WS_PORT } from '$env/static/public';
+	import { PUBLIC_WS_PORT, PUBLIC_WS_HOST } from '$env/static/public';
 
 	import { Send } from 'lucide-svelte';
 
@@ -14,7 +14,7 @@
 
 	const { user }: Props = $props();
 
-	const ws = new WebSocket('ws://localhost:' + PUBLIC_WS_PORT);
+	const ws = new WebSocket(`ws://${PUBLIC_WS_HOST}:${PUBLIC_WS_PORT}`);
 
 	let messages: Array<{ userId: string; content: string }> = $state([]);
 	let allUsers: Array<{ id: string; username: string }> = $state([]);
@@ -34,6 +34,10 @@
 
 			case 'status':
 				console.log(response.content);
+				break;
+
+			case 'new message':
+				messages.push(response.data);
 				break;
 		}
 	};
