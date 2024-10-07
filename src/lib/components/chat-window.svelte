@@ -55,11 +55,13 @@
 
 <div class="flex h-[83vh] flex-col overflow-hidden">
 	<ScrollArea class="flex-grow p-4">
-		{#each messages as message}
-			<div class="mb-4 text-lg {message.userId === user.id ? 'text-right' : 'text-left'}">
-				<p class="mb-1 font-semibold">
-					{allUsers.find((u) => u.id === message.userId)?.username}
-				</p>
+		{#each messages as message, index}
+			<div class="mb-2 text-lg {message.userId === user.id ? 'text-right' : 'text-left'}">
+				{#if index === 0 || messages[index - 1].userId !== message.userId}
+					<p class="mb-1 font-semibold">
+						{allUsers.find((u) => u.id === message.userId)?.username}
+					</p>
+				{/if}
 				<div
 					class="inline-block max-w-[65%] {message.userId === user.id
 						? 'bg-primary text-primary-foreground'
